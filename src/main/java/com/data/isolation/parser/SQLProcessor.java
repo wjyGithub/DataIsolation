@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 如果需要使用数据隔离，需要项目上对sql做出如下规定：
  * 1. 不予许使用right连接,因为对于right通过可以使用left连接替代
- * 2. 不需要使用","连接符,因为","连接符通常可以使用inner连接替代
+ * 2. 不予许使用","连接符,因为","连接符通常可以使用inner连接替代
  *
  * Created by jianyuan.wei@hand-china.com
  * on 2019/6/14 19:43.

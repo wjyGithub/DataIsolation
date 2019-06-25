@@ -41,11 +41,9 @@ public class SQLUtil {
         for (SQLSelectItem selectItem : selectColumns) {
             processQueryInSelectItem(selectItem);
         }
-
         //处理表
         SQLTableSource tables = queryBlock.getFrom();
         processTableSource(tables, queryBlock);
-
         //处理where条件里面的子查询
         SQLExpr where = queryBlock.getWhere();
         whereProcessor(where);
@@ -107,6 +105,7 @@ public class SQLUtil {
      * @param queryBlock
      */
     public static final void processJoinTableSource(SQLJoinTableSource joinTableSource, SQLSelectQueryBlock queryBlock) {
+        //右连接
         SQLTableSource rightTableSource = joinTableSource.getRight();
         if (rightTableSource instanceof SQLSubqueryTableSource) {
             SQLSubqueryTableSource subqueryTableSource = (SQLSubqueryTableSource) rightTableSource;
@@ -128,6 +127,8 @@ public class SQLUtil {
             addAndCondition(rightCondition, joinTableSource);
             addConditionForRight(joinTableSource);
         }
+
+        //左连接
         SQLTableSource leftTableSource = joinTableSource.getLeft();
         //子查询
         if (leftTableSource instanceof SQLSubqueryTableSource) {
@@ -193,7 +194,6 @@ public class SQLUtil {
     }
 
     public static final void addAndCondition(String columnName, SQLJoinTableSource joinTableSource) {
-        SQLExpr condition = joinTableSource.getCondition();
         if (isIn) {
             joinTableSource.addConditionn(WhereUtil.getInExpr(columnName, DataUtil.getOrganizationIds()));
         } else {
@@ -229,7 +229,6 @@ public class SQLUtil {
 
     /**
      * 处理字段中的子查询
-     *
      * @param selectItem 字段
      */
     private static final void processQueryInSelectItem(SQLSelectItem selectItem) {
