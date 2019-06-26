@@ -9,8 +9,10 @@
 
 # 用法
 在pom.xml里面直接引入依赖即可
+```text
 <dependency>
     <groupId>com.wjy</groupId>
     <artifactId>data-isolation</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
+```
