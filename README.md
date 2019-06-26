@@ -5,7 +5,7 @@
 开发者可自己实现接口将解析逻辑添加到该框架中
 
 # 框架设计原理
-
+![框架设计原理](https://github.com/wjyGithub/DataIsolation/blob/master/src/main/resources/images/%E6%95%B0%E6%8D%AE%E9%9A%94%E7%A6%BB%E8%AE%BE%E8%AE%A1.png)
 
 # 用法
 在pom.xml里面直接引入依赖即可
