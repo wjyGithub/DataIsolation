@@ -6,24 +6,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 查询列操作过滤器
- * 该接口主要用于对查询类的操作
  * Created by jianyuan.wei@hand-china.com
- * on 2019/6/14 15:33.
+ * on 2019/7/16 17:37.
  */
-public interface SelectItemFilter {
+public interface WhereExprFilter {
 
     Logger log = LoggerFactory.getLogger(SelectItemFilter.class);
     /**
      * 过滤器的权重，比值越高,权重高
      * @return 权重值
      */
-     int filterOrder();
+    int filterOrder();
 
     /**
      * 用于处理查询列
-     * @param selectItem 查询出来的某一列
+     * @param sqlExpr where条件的某一列
      * @return true: 中断后面的过滤器链  false:继续执行后面的过滤器链
      */
-    boolean selectItemProcessor(SQLExpr selectItem);
+    boolean whereExprProcess(SQLExpr sqlExpr);
 }

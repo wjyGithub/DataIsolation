@@ -13,7 +13,7 @@ import java.util.List;
 public class DruidUtil {
 
 
-    public static final String  addWhereForSelectSql(String sql) {
+    public static final String  isolationEntry(String sql) {
         String mysql = JdbcConstants.MYSQL;
         List<SQLStatement> sqlStatements = SQLUtils.toStatementList(sql, mysql);
         SQLStatement sqlStatement = sqlStatements.get(0);

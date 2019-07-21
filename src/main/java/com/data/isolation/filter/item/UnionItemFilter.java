@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.expr.SQLQueryExpr;
 import com.alibaba.druid.sql.ast.statement.*;
 import com.data.isolation.filter.SelectItemFilter;
+import com.data.isolation.parser.SQLCommon;
 import com.data.isolation.parser.SQLUtil;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
  * on 2019/6/14 17:01.
  */
 @Component
-public class UnionItemFilter implements SelectItemFilter {
+public class UnionItemFilter extends SQLCommon implements SelectItemFilter {
 
     @Override
     public int filterOrder() {
@@ -21,15 +22,10 @@ public class UnionItemFilter implements SelectItemFilter {
     }
 
     @Override
-    public boolean selectItemProcessor(SQLSelectItem selectItem) {
-        log.info("start UnionItemFilter....");
-        SQLExpr expr = selectItem.getExpr();
-        if(expr instanceof SQLQueryExpr) {
-            SQLQueryExpr queryExpr = (SQLQueryExpr)expr;
-            SQLSelect subQuery = queryExpr.getSubQuery();
-            SQLSelectQuery selectQuery = subQuery.getQuery();
-            if(selectQuery instanceof SQLUnionQuery) {
-                SQLUnionQuery unionQuery = (SQLUnionQuery)selectQuery;
+    public boolean selectItemProcessor(SQLExpr selectItem) {
+        if(selectItem instanceof SQLQueryExpr) {
+            SQLUnionQuery unionQuery = extractUnionQuery((SQLQueryExpr) selectItem);
+            if(unionQuery != null) {
                 SQLUtil.processUnionSelect(unionQuery);
                 log.info("process success UnionItemFilter....");
                 return true;

@@ -157,7 +157,7 @@ public class Main {
                 "            ) t\n" +
                 "            LEFT JOIN t_thing_property tp ON tp.DATA_ID = t.DATA_ID";
         String sqlT= "select if((select * from xx union select aa from xx),1,1) t from user";
-        String addSql = DruidUtil.addWhereForSelectSql(sqlT);
+        String addSql = DruidUtil.isolationEntry(sqlT);
         System.out.println(addSql);
 
     }

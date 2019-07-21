@@ -3,6 +3,7 @@ package com.data.isolation.interceptor;
 import com.data.isolation.parser.DruidUtil;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
@@ -24,6 +25,7 @@ public class DruidInterceptor implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
+        MappedStatement ms = (MappedStatement)invocation.getArgs()[0];
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
         BoundSql boundSql = statementHandler.getBoundSql();
         //获取到原始sql语句
@@ -31,7 +33,7 @@ public class DruidInterceptor implements Interceptor {
         //通过反射修改sql语句
         Field field = boundSql.getClass().getDeclaredField("sql");
         field.setAccessible(true);
-        DruidUtil.addWhereForSelectSql(sql);
+        DruidUtil.isolationEntry(sql);
         field.set(boundSql,field);
         return invocation.proceed();
     }
