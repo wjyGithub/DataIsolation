@@ -3,7 +3,7 @@
 数据隔离框架主要用于为每条sql动态的添加相同的过滤条件，无需开发人员手动添加隔离条件    
 该框架在设计上，采用过滤器链的方式，用于解决不同复杂度的sql解析，对于目前框架不提供的sql写法,  
 开发者可自己实现接口将解析逻辑添加到该框架中  
-该框架在使用时需要对sql做一定的约束,并约束并不会弱化sql的功能,只是为了更好的规范sql的编写,方便框架解析:  
+该框架在使用时需要对sql做一定的约束,该约束并不会弱化sql的功能,只是为了更好的规范sql的编写,方便框架解析:  
 1. 不允许使用right join进行sql的连接操作,可以使用left join进行替代
 2. 不允许使用逗号(,)进行sql的连接操作，可使用inner join进行替代
 
@@ -23,7 +23,7 @@
 
 # 定制化解析
 该框架对外提供了两个接口，分别用于开发者定制化解析sql  
-查询列的定制化开发
+查询列的定制化开发接口
 ```java
 public interface SelectItemFilter {
 
@@ -42,7 +42,7 @@ public interface SelectItemFilter {
     boolean selectItemProcessor(SQLExpr selectItem);
 }
 ```
-where条件的定制化开发
+where条件的定制化开发接口
 ```java
 public interface WhereExprFilter {
 
