@@ -1,49 +1,50 @@
-package com.data.isolation.filter.item;
+package com.data.isolation.filter.where;
 
 import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.expr.SQLBinaryOpExpr;
 import com.alibaba.druid.sql.ast.expr.SQLQueryExpr;
-import com.alibaba.druid.sql.ast.expr.SQLVariantRefExpr;
-import com.alibaba.druid.sql.ast.statement.*;
-import com.data.isolation.filter.SelectItemFilter;
+import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
+import com.alibaba.druid.sql.ast.statement.SQLUnionQuery;
+import com.data.isolation.filter.WhereExprFilter;
 import com.data.isolation.parser.SQLCommon;
 import com.data.isolation.parser.SQLUtil;
 import org.springframework.stereotype.Component;
 
 /**
- * @cowCount := (ELECT count(1) FROM t_nz_cow t
- * WHERE t.DEL = 0  AND t.PRESENT = 1 AND t.FARM_UUID = tjh.FARM_UUID
- * AND t.HOUSE_UUID = tjh.UUID ) AS cowCount
- *
+ * 等值(=)表达式
  * Created by jianyuan.wei@hand-china.com
- * on 2019/6/14 17:16.
+ * on 2019/7/16 18:25.
  */
-@Component(value = "selectEqualTo")
-public class EqualToFilter extends SQLCommon implements SelectItemFilter{
+@Component(value = "whereEqualTo")
+public class EqualToFilter extends SQLCommon implements WhereExprFilter {
+
+
     @Override
     public int filterOrder() {
-        return 2;
+        return 0;
     }
 
     @Override
-    public boolean selectItemProcessor(SQLExpr selectItem) {
-        if (selectItem instanceof SQLBinaryOpExpr) {
-            SQLBinaryOpExpr opExpr = (SQLBinaryOpExpr) selectItem;
-            SQLExpr rightExpr = opExpr.getRight();
-            if (rightExpr instanceof SQLQueryExpr && opExpr.getLeft() instanceof SQLVariantRefExpr) {
+    public boolean whereExprProcess(SQLExpr sqlExpr) {
+        if(sqlExpr instanceof SQLBinaryOpExpr) {
+            SQLBinaryOpExpr equalToExpr = (SQLBinaryOpExpr)sqlExpr;
+            SQLExpr rightExpr = equalToExpr.getRight();
+            if(rightExpr instanceof SQLQueryExpr) {
+                //子查询
                 SQLSelectQueryBlock queryBlock = extractQueryBlock((SQLQueryExpr) rightExpr);
                 if(queryBlock != null) {
                     SQLUtil.processPlainSelect(queryBlock);
                     return true;
                 }
+
                 SQLUnionQuery unionQuery = extractUnionQuery((SQLQueryExpr) rightExpr);
                 if(unionQuery != null) {
                     SQLUtil.processUnionSelect(unionQuery);
                     return true;
                 }
-
             }
         }
         return false;
     }
+
 }

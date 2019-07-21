@@ -16,7 +16,10 @@ import java.util.List;
 public class FilterRegister implements BeanPostProcessor {
 
     @Autowired
-    private FilterManagement management;
+    private ItemFilterManagement ItemManagement;
+
+    @Autowired
+    private WhereFilterManagement whereManagement;
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -25,9 +28,17 @@ public class FilterRegister implements BeanPostProcessor {
         if(filters.contains(SelectItemFilter.class)) {
             Package pack = bean.getClass().getPackage();
             if(StringUtils.equals("com.data.isolation.filter.item",pack.getName())) {
-                management.registerDefaultItemFilter((SelectItemFilter) bean);
+                ItemManagement.registerDefaultItemFilter((SelectItemFilter) bean);
             }else {
-                management.registerItemFilter((SelectItemFilter) bean);
+                ItemManagement.registerItemFilter((SelectItemFilter) bean);
+            }
+        }
+        if(filters.contains(WhereExprFilter.class)) {
+            Package pack = bean.getClass().getPackage();
+            if(StringUtils.equals("com.data.isolation.filter.where",pack.getName())) {
+                whereManagement.registerDefaultItemFilter((WhereExprFilter)bean);
+            } else {
+                whereManagement.registerItemFilter((WhereExprFilter)bean);
             }
         }
         return bean;

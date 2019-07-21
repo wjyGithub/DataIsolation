@@ -1,5 +1,6 @@
 package com.data.isolation.filter;
 
+import com.alibaba.druid.sql.ast.SQLExpr;
 import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
 import org.springframework.stereotype.Component;
 
@@ -7,14 +8,14 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
- * 过滤器管理中心
+ * 查询列过滤器管理中心
  * Created by jianyuan.wei@hand-china.com
  * on 2019/6/14 14:20.
  */
 @Component
-public class FilterManagement {
+public class ItemFilterManagement {
 
-    private static FilterManagement filterManagement;
+    private static ItemFilterManagement filterManagement;
 
     @PostConstruct
     public void init(){
@@ -31,7 +32,7 @@ public class FilterManagement {
      */
     private List<SelectItemFilter> customizeItemFilterManagerments;
 
-    private FilterManagement() {
+    private ItemFilterManagement() {
         defaultItemFilterManagerments = new ArrayList<>();
         customizeItemFilterManagerments = new ArrayList<>();
 
@@ -77,7 +78,7 @@ public class FilterManagement {
      * 过滤器处理
      * @param selectItem 查询列
      */
-    public void doFilter(SQLSelectItem selectItem) {
+    public void doFilter(SQLExpr selectItem) {
         List<SelectItemFilter> itemFilterManagerments = getItemFilterManagerments();
         for(SelectItemFilter selectItemFilter : itemFilterManagerments) {
             if(selectItemFilter.selectItemProcessor(selectItem)) {
@@ -86,7 +87,7 @@ public class FilterManagement {
         }
     }
 
-    public static FilterManagement getInstance(){
+    public static ItemFilterManagement getInstance(){
         return filterManagement;
     }
 
