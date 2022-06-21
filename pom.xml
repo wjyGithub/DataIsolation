@@ -49,7 +49,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.15</version>
+            <version>8.0.28</version>
         </dependency>
         <!-- 用于加载bootstrap.yml文件，springboot默认是不支持bootstrap.yml文件的，只有springcloud支持该文件 -->
         <dependency>
